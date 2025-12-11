@@ -1,0 +1,23 @@
+{
+  "name": "my-auth-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A simple authentication app using Node.js with login and signup",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "authentication",
+    "nodejs",
+    "login",
+    "signup"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "nodemailer": "^6.9.7"
+  }
+}
