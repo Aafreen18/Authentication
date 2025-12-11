@@ -1,15 +1,33 @@
 # My Auth App
 
-A simple authentication application built with Node.js, featuring user registration and login functionality.
+A modern, fully-featured authentication application built with Node.js, featuring user registration, login, password reset, and an intuitive user interface with smooth animations.
 
 ## Features
 
-- User signup with email and password
-- User login with email and password
-- Password hashing using SHA-256
-- Token generation for authenticated sessions
-- Protected dashboard page
-- Clean and responsive UI
+- **User Authentication**
+  - User signup with email and password
+  - User login with email and password
+  - Email verification support
+  
+- **Security**
+  - Password hashing using SHA-256
+  - Token generation for authenticated sessions
+  - Secure password reset via email with expiring tokens (15-minute validity)
+  - Protected dashboard page
+  
+- **Email Integration**
+  - Password reset functionality with email notifications
+  - Support for Gmail (via App Password) or custom SMTP
+  - Fallback console logging for testing without email setup
+  
+- **User Interface**
+  - Modern, responsive design with gradient backgrounds
+  - Smooth button animations and transitions
+  - Interactive toggle between login and signup forms
+  - Real-time form validation feedback
+  - Beautiful hover effects with lift animation
+  - Shine effect on buttons for enhanced interactivity
+  - Professional dashboard with logout functionality
 
 ## Project Structure
 
@@ -35,6 +53,38 @@ my-auth-app/
    ```bash
    cd my-auth-app
    ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## Configuration
+
+### Email Setup (Optional)
+
+To enable password reset emails, configure one of the following:
+
+#### Gmail Setup
+1. Create an [App Password](https://support.google.com/accounts/answer/185833)
+2. Create a `.env` file in the project root:
+   ```
+   GMAIL_USER=your-email@gmail.com
+   GMAIL_PASS=your-app-password
+   GMAIL_FROM=your-email@gmail.com
+   ```
+
+#### Custom SMTP Server
+Create a `.env` file:
+```
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your-email@example.com
+SMTP_PASS=your-password
+SMTP_SECURE=false
+SMTP_FROM=noreply@example.com
+```
+
+If no email configuration is provided, reset links will be logged to the console.
 
 ## Running the App
 
@@ -47,10 +97,23 @@ The server will run on `http://localhost:3000`
 
 ## Usage
 
+### Sign Up
 1. Open your browser and go to `http://localhost:3000`
-2. Sign up with your email and password
-3. Log in with your credentials
-4. You'll be redirected to the dashboard
+2. Click the "Sign Up" button
+3. Enter your full name, email, and password
+4. Click "Sign Up" to create your account
+
+### Login
+1. Click the "Login" button on the home page
+2. Enter your email and password
+3. Click "Login" to access your dashboard
+
+### Password Reset
+1. On the login page, click "Forgot password? Email me a reset"
+2. Enter your email address
+3. Check your email for a password reset link
+4. Click the link and enter your new password
+5. Return to login with your new password
 
 ## API Endpoints
 
@@ -69,7 +132,7 @@ Register a new user.
 **Response:**
 ```json
 {
-  "message": "User created successfully"
+  "message": "Signup successful"
 }
 ```
 
@@ -97,12 +160,111 @@ Login with email and password.
 }
 ```
 
+### POST /api/forgot-password
+Request a password reset email.
+
+**Request Body:**
+```json
+{
+  "email": "john@example.com"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "If an account with that email exists, you will receive an email shortly."
+}
+```
+
+### POST /api/reset-password
+Reset password using token from email.
+
+**Request Body:**
+```json
+{
+  "token": "reset_token_from_email",
+  "password": "new_password"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Password has been reset successfully"
+}
+```
+
+## UI Features
+
+### Animations & Transitions
+- **Button Animations**: Smooth gradient buttons with hover lift effect
+- **Shine Effect**: Elegant light shine that sweeps across buttons on hover
+- **Form Transitions**: Smooth slide-in animation when switching between login and signup
+- **Shadow Effects**: Dynamic box-shadow that increases on hover for depth
+- **Active Feedback**: Click response with immediate visual feedback
+
+### Design Elements
+- **Modern Gradient**: Purple-to-indigo background for the main page
+- **Frosted Glass Toggle**: Semi-transparent toggle buttons with backdrop blur
+- **Responsive Layout**: Works seamlessly on desktop, tablet, and mobile devices
+- **Color Coded Messages**: Green for success, red for errors
+
+## Tech Stack
+
+- **Backend**: Node.js (ES modules)
+- **Email**: Nodemailer (Gmail or custom SMTP)
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Data Storage**: JSON file
+- **Security**: SHA-256 hashing, secure token generation
+
 ## Notes
 
-- This is a basic authentication app for learning purposes
-- Passwords are hashed using SHA-256 (not suitable for production)
-- User data is stored in a JSON file (not suitable for production)
-- For production, use proper database and bcrypt for password hashing
+- This is an educational authentication app demonstrating modern web development practices
+- Passwords are hashed using SHA-256 (suitable for learning; use bcrypt in production)
+- User data is stored in JSON format (suitable for learning; use a database in production)
+- For production deployment:
+  - Use a proper database (MongoDB, PostgreSQL, etc.)
+  - Replace SHA-256 with bcrypt for password hashing
+  - Implement HTTPS
+  - Add rate limiting and input validation
+  - Use environment variables for sensitive configuration
+  - Implement proper session management
+
+## File Structure
+
+```
+my-auth-app/
+├── data/
+│   └── users.json              # User database (JSON)
+├── public/
+│   ├── index.html              # Login/Signup page
+│   ├── dashboard.html          # Protected dashboard
+│   ├── reset-password.html     # Password reset page
+│   ├── style.css               # Styles with animations
+│   └── app.js                  # Client-side logic
+├── server.js                   # Node.js server
+├── package.json                # Dependencies
+├── .env                        # Email configuration (optional)
+└── README.md                   # Documentation
+```
+
+## Troubleshooting
+
+**Emails not sending?**
+- Check if `.env` file is configured correctly
+- Verify Gmail App Password is set up (not regular password)
+- Check console logs for SMTP errors
+- Ensure firewall isn't blocking SMTP port
+
+**Form not submitting?**
+- Open browser console (F12) for error messages
+- Check network tab to see API responses
+- Ensure server is running on port 3000
+
+**Password reset link expired?**
+- Links are valid for 15 minutes
+- Request a new reset email if needed
 
 ## License
 
